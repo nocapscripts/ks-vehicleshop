@@ -23,5 +23,5 @@
 
   * Deluxe vehicleshop DLC !PAID or free by searching deeply
   
-  [QB-MENU](https://github.com/qbcore-framework/qb-menu)
+  * [QB-MENU](https://github.com/qbcore-framework/qb-menu)
  
