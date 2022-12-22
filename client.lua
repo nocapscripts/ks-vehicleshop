@@ -205,7 +205,7 @@ local function createVehZones(shopName, entity)
 end
 
 -- Zones
-function createFreeUseShop(shopShape, name)
+/*function CreateCarShop(shopShape, name)
     local zone = PolyZone:Create(shopShape, {
         name = name,
         minZ = shopShape.minZ,
@@ -254,6 +254,7 @@ function createFreeUseShop(shopShape, name)
                         },
                     }
                     Wait(1000)
+                    -- CARDEALER SCRIPT
                 while insideShop and PlayerData.job and PlayerData.job.name == Config.Shops[name]['Job'] do
                     setClosestShowroomVehicle()
                     vehicleMenu = {
@@ -316,6 +317,138 @@ function createFreeUseShop(shopShape, name)
             ClosestVehicle = 1
         end
     end)
+end*/
+
+function createFreeUseShop(shopShape, name)
+    local zone = PolyZone:Create(shopShape, {
+        name = name,
+        minZ = shopShape.minZ,
+        maxZ = shopShape.maxZ
+    })
+
+    zone:onPlayerInOut(function(isPointInside)
+        if isPointInside then
+            insideShop = name
+            CreateThread(function()
+                while insideShop do
+                    setClosestShowroomVehicle()
+                    vehicleMenu = {
+                        {
+                            isMenuHeader = true,
+                            icon = "fa-solid fa-circle-info",
+                            header = getVehBrand():upper() .. ' ' .. getVehName():upper() .. ' - $' .. getVehPrice(),
+                        },
+                        {
+                            header = Lang:t('menus.test_header'),
+                            txt = Lang:t('menus.freeuse_test_txt'),
+                            icon = "fa-solid fa-car-on",
+                            params = {
+                                event = 'qb-vehicleshop:client:TestDrive',
+                            }
+                        },
+                        {
+                            header = Lang:t('menus.finance_header'),
+                            txt = Lang:t('menus.freeuse_finance_txt'),
+                            icon = "fa-solid fa-coins",
+                            params = {
+                                event = 'qb-vehicleshop:client:openFinance',
+                                args = {
+                                    price = getVehPrice(),
+                                    buyVehicle = Config.Shops[insideShop]["ShowroomVehicles"][ClosestVehicle].chosenVehicle
+                                }
+                            }
+                        },
+                        {
+                            header = Lang:t('menus.swap_header'),
+                            txt = Lang:t('menus.swap_txt'),
+                            icon = "fa-solid fa-arrow-rotate-left",
+                            params = {
+                                event = 'qb-vehicleshop:client:vehCategories',
+                            }
+                        },
+                    }
+                    Wait(1000)
+                end
+            end)
+        else
+            insideShop = nil
+            ClosestVehicle = 1
+        end
+    end)
+end
+
+function createManagedShop(shopShape, name)
+    local zone = PolyZone:Create(shopShape, {
+        name = name,
+        minZ = shopShape.minZ,
+        maxZ = shopShape.maxZ
+    })
+
+    zone:onPlayerInOut(function(isPointInside)
+        if isPointInside then
+            insideShop = name
+            CreateThread(function()
+                while insideShop and PlayerData.job and PlayerData.job.name == Config.Shops[name]['Job'] do
+                    setClosestShowroomVehicle()
+                    vehicleMenu = {
+                        {
+                            isMenuHeader = true,
+                            icon = "fa-solid fa-circle-info",
+                            header = getVehBrand():upper() .. ' ' .. getVehName():upper() .. ' - $' .. getVehPrice(),
+                        },
+                        {
+                            header = Lang:t('menus.test_header'),
+                            txt = Lang:t('menus.managed_test_txt'),
+                            icon = "fa-solid fa-user-plus",
+                            params = {
+                                event = 'qb-vehicleshop:client:openIdMenu',
+                                args = {
+                                    vehicle = Config.Shops[insideShop]["ShowroomVehicles"][ClosestVehicle].chosenVehicle,
+                                    type = 'testDrive'
+                                }
+                            }
+                        },
+                        {
+                            header = Lang:t('menus.managed_sell_header'),
+                            txt = Lang:t('menus.managed_sell_txt'),
+                            icon = "fa-solid fa-cash-register",
+                            params = {
+                                event = 'qb-vehicleshop:client:openIdMenu',
+                                args = {
+                                    vehicle = Config.Shops[insideShop]["ShowroomVehicles"][ClosestVehicle].chosenVehicle,
+                                    type = 'sellVehicle'
+                                }
+                            }
+                        },
+                        {
+                            header = Lang:t('menus.finance_header'),
+                            txt = Lang:t('menus.managed_finance_txt'),
+                            icon = "fa-solid fa-coins",
+                            params = {
+                                event = 'qb-vehicleshop:client:openCustomFinance',
+                                args = {
+                                    price = getVehPrice(),
+                                    vehicle = Config.Shops[insideShop]["ShowroomVehicles"][ClosestVehicle].chosenVehicle
+                                }
+                            }
+                        },
+                        {
+                            header = Lang:t('menus.swap_header'),
+                            txt = Lang:t('menus.swap_txt'),
+                            icon = "fa-solid fa-arrow-rotate-left",
+                            params = {
+                                event = 'qb-vehicleshop:client:vehCategories',
+                            }
+                        },
+                    }
+                    Wait(1000)
+                end
+            end)
+        else
+            insideShop = nil
+            ClosestVehicle = 1
+        end
+    end)
 end
 
 
@@ -325,6 +458,8 @@ function Init()
         for name, shop in pairs(Config.Shops) do
             if shop['Type'] == 'free-use' then
                 createFreeUseShop(shop['Zone']['Shape'], name)
+
+                createManagedShop(shop['Zone']['Shape'], name)
             end
         end
     end)
@@ -363,6 +498,7 @@ function Init()
                 SetEntityHeading(veh, Config.Shops[k]["ShowroomVehicles"][i].coords.w)
                 FreezeEntityPosition(veh, true)
                 SetVehicleNumberPlateText(veh, 'BUY ME')
+                --DrawMarker(3, coords.x, coords.y, coords.z, 0.10, 0.10, 1.00, true, false, false)
                 if Config.UsingTarget then createVehZones(k, veh) end
             end
             if not Config.UsingTarget then createVehZones(k) end
@@ -394,7 +530,7 @@ RegisterNetEvent('qb-vehicleshop:client:TestDrive', function()
             QBCore.Functions.Notify(Lang:t('general.testdrive_timenoti', {testdrivetime = Config.Shops[tempShop]["TestDriveTimeLimit"]}))
         end, Config.Shops[tempShop]["ShowroomVehicles"][ClosestVehicle].chosenVehicle, Config.Shops[tempShop]["TestDriveSpawn"], true)
         createTestDriveReturn()
-        startTestDriveTimer(Config.Shops[tempShop]["TestDriveTimeLimit"] * 30, prevCoords)
+        startTestDriveTimer(Config.Shops[tempShop]["TestDriveTimeLimit"] * 60, prevCoords)
     else
         QBCore.Functions.Notify(Lang:t('error.testdrive_alreadyin'), 'error')
     end
@@ -416,7 +552,7 @@ RegisterNetEvent('qb-vehicleshop:client:customTestDrive', function(data)
             QBCore.Functions.Notify(Lang:t('general.testdrive_timenoti', {testdrivetime = Config.Shops[tempShop]["TestDriveTimeLimit"]}))
         end, vehicle, Config.Shops[tempShop]["TestDriveSpawn"], true)
         createTestDriveReturn()
-        startTestDriveTimer(Config.Shops[tempShop]["TestDriveTimeLimit"] * 30, prevCoords)
+        startTestDriveTimer(Config.Shops[tempShop]["TestDriveTimeLimit"] * 60, prevCoords)
     else
         QBCore.Functions.Notify(Lang:t('error.testdrive_alreadyin'), 'error')
     end

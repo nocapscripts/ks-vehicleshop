@@ -1,5 +1,5 @@
 Config = {}
-Config.UsingTarget = GetConvar('UseTarget', 'false') == 'true'
+Config.UsingTarget = GetConvar('UseTarget', 'true') == 'true'
 Config.Commission = 0.10 -- Percent that goes to sales person from a full car sale 10%
 Config.FinanceCommission = 0.05 -- Percent that goes to sales person from a finance sale 5%
 Config.FinanceZone = vector3(-29.53, -1103.67, 26.42)-- Where the finance menu is located
@@ -24,34 +24,33 @@ Config.Shops = {
             },
             ['minZ'] = 32.1, -- min height of the shop zone
             ['maxZ'] = 40.09, -- max height of the shop zone
-            ['size'] = 3.75 -- size of the vehicles zones
+            ['size'] = 2.35 -- size of the vehicles zones
         },
         ['Job'] = 'cardealer', -- Name of job or none
-        ['ShopLabel'] = 'Premium Deluxe Motorsport', -- Blip name
+        ['ShopLabel'] = 'Auto24', -- Blip name
         ['showBlip'] = true, -- true or false
         ['blipSprite'] = 326, -- Blip sprite
         ['blipColor'] = 3, -- Blip color
-        ['TestDriveTimeLimit'] = 0.2, -- Time in minutes until the vehicle gets deleted
+        ['TestDriveTimeLimit'] = 0.3, -- Time in minutes until the vehicle gets deleted
         ['Location'] = vector3(-783.68, -223.28, 37.32), -- Blip Location
         ['ReturnLocation'] = vector3(-759.01, -234.44, 37.28), -- Location to return vehicle, only enables if the vehicleshop has a job owned
-        ['VehicleSpawn'] = vector4(-783.68, -223.28, 37.32, 129.47), -- Spawn location when vehicle is bought
+        ['VehicleSpawn'] = vector4(-773.58, -234.57, 37.08, 205.46), -- Spawn location when vehicle is bought
         ['TestDriveSpawn'] = vector4(-763.33, -247.19, 37.1, 113.15), -- Spawn location for test drive
         ['ShowroomVehicles'] = {
             [1] = {
-                coords = vector4(-783.68, -223.64, 37.32, 138.27), -- where the vehicle will spawn on display
+                coords = vector4(-790.99, -224.31, 37.07, 171.93), -- where the vehicle will spawn on display
                 defaultVehicle = 'e30t', -- Default display vehicle
                 chosenVehicle = 'e30t', -- Same as default but is dynamically changed when swapping vehicles
             },
             [2] = {
-                coords = vector4(-792.28, -235.19, 37.08, 266.28),
+                coords = vector4(-794.87, -230.98, 37.07, 76.57),
                 defaultVehicle = 'mk3',
                 chosenVehicle = 'mk3',
             },
             [3] = {
-                coords = vector4(-784.38, -244.35, 37.08, 30.51),
+                coords = vector4(-792.19, -236.60, 37.07, 252.13),
                 defaultVehicle = 'caracara2',
                 chosenVehicle = 'caracara2',
-
             },
         },
     },
