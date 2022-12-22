@@ -26,6 +26,9 @@
   * [QB-MENU](https://github.com/qbcore-framework/qb-menu)
  
   * [QB-CORE](https://github.com/qbcore-framework/qb-core)
+# DEFAULT QB VEHICLESHOP
+
+* [QB-VEHICLESHOP](https://github.com/qbcore-framework/qb-vehicleshop)
 
 
 # DEMO VIDEO
