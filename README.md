@@ -25,3 +25,4 @@
   
   * [QB-MENU](https://github.com/qbcore-framework/qb-menu)
  
+  * [QB-CORE](https://github.com/qbcore-framework/qb-core)
